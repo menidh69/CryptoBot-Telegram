@@ -35,6 +35,10 @@ bot.command('crypto', async (ctx) => {
   }
 });
 
+bot.telegram.setWebhook(
+  'https://crypto-bot-telegram.herokuapp.com/secret-path'
+);
+
 const app = express();
 
 app.get('/', (_req: Request, res: Response) => {
@@ -45,6 +49,6 @@ app.get('/', (_req: Request, res: Response) => {
 // Set the bot API endpoint
 app.use(bot.webhookCallback('/secret-path'));
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log('App is running!');
 });
