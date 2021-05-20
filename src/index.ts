@@ -1,6 +1,6 @@
 import './config';
-import { Telegraf } from 'telegraf';
 
+import { Telegraf } from 'telegraf';
 import { getCurrentPrice } from './api';
 import { getAbbreviation } from './utils/getAbbreviation';
 
