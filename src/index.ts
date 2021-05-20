@@ -35,20 +35,24 @@ bot.command('crypto', async (ctx) => {
   }
 });
 
-bot.telegram.setWebhook(
-  'https://crypto-bot-telegram.herokuapp.com/secret-path'
-);
+if (process.env.NODE_ENV === 'production') {
+  bot.telegram.setWebhook(
+    'https://crypto-bot-telegram.herokuapp.com/secret-path'
+  );
 
-const app = express();
+  const app = express();
 
-app.get('/', (_req: Request, res: Response) => {
-  console.log('Endpoint was hitted');
-  res.send('This is the telegram crypto bot App');
-});
+  app.get('/', (_req: Request, res: Response) => {
+    console.log('Endpoint was hitted');
+    res.send('This is the telegram crypto bot App');
+  });
 
-// Set the bot API endpoint
-app.use(bot.webhookCallback('/secret-path'));
+  // Set the bot API endpoint
+  app.use(bot.webhookCallback('/secret-path'));
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log('App is running!');
-});
+  app.listen(process.env.PORT || 3000, () => {
+    console.log('App is running!');
+  });
+} else if (process.env.NODE_ENV === 'development') {
+  bot.launch();
+}
