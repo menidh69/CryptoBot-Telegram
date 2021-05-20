@@ -37,7 +37,7 @@ bot.command('crypto', async (ctx) => {
 
 const app = express();
 
-app.get('/', (req: Request, res: Response) => {
+app.get('/', (_req: Request, res: Response) => {
   console.log('Endpoint was hitted');
   res.send('This is the telegram crypto bot App');
 });
