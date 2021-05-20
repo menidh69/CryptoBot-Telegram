@@ -1,5 +1,11 @@
 import axios from 'axios';
 
+import { config } from '../config';
+
+const {
+  twitter: { BEARER_TOKEN, URL_TWEETS_ELON },
+} = config;
+
 interface AvgPrice {
   min: number;
   price: string;
@@ -23,5 +29,29 @@ export const getCurrentPrice = async (
     return undefined;
   } catch (e) {
     return e.message;
+  }
+};
+
+interface TweetElonData {
+  id: number;
+  text: string;
+}
+
+interface TweetsElonData {
+  data: TweetElonData[];
+}
+
+export const tweetElon = async () => {
+  try {
+    const {
+      data: { data },
+    } = await axios.get<TweetsElonData>(URL_TWEETS_ELON, {
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+      },
+    });
+    return data;
+  } catch (e) {
+    throw new Error(e.message);
   }
 };
