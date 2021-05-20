@@ -4,6 +4,8 @@ import { Telegraf } from 'telegraf';
 import { getCurrentPrice } from './api';
 import { getAbbreviation } from './utils/getAbbreviation';
 
+require('newrelic');
+
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 
 bot.start((ctx) => {
