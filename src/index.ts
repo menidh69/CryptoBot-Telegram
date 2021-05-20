@@ -1,12 +1,18 @@
 import './config';
 
+import express, { Request, Response } from 'express';
 import { Telegraf } from 'telegraf';
 import { getCurrentPrice } from './api';
 import { getAbbreviation } from './utils/getAbbreviation';
 
 require('newrelic');
 
-const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
+const token = process.env.TELEGRAM_BOT_TOKEN;
+if (token === undefined) {
+  throw new Error('BOT_TOKEN must be provided!');
+}
+
+const bot = new Telegraf(token);
 
 bot.start((ctx) => {
   ctx.reply(`Te doy la bienvenida ${ctx.message.from.first_name}`);
@@ -29,4 +35,16 @@ bot.command('crypto', async (ctx) => {
   }
 });
 
-bot.launch();
+const app = express();
+
+app.get('/', (req: Request, res: Response) => {
+  console.log('Endpoint was hitted');
+  res.send('This is the telegram crypto bot App');
+});
+
+// Set the bot API endpoint
+app.use(bot.webhookCallback('/secret-path'));
+
+app.listen(3000, () => {
+  console.log('App is running!');
+});
